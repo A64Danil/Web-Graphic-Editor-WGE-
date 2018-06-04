@@ -1,0 +1,45 @@
+* {}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+    user-select: none;
+}
+
+#myCanvas {
+    background-color: rgba(255, 0, 0, 0.18);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+
+p.hint {
+    position: absolute;
+    z-index: 100;
+}
+
+.shapes {
+    position: absolute;
+    z-index: 100;
+    right: 0;
+    background-color: #ddd;
+    top: 10%;
+}
+
+.shapes .menu{
+    cursor: pointer;
+    padding: 5px 30px 8px 25px;
+    margin: 0;
+    width: 140px;
+
+}
+.shapes .menu:hover {background: #bbb; font-weight: bold;}
+
+p {font-size: 22px;}
+
+@media (max-width: 767px)  {
+
+}
