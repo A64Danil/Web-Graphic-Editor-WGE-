@@ -8,7 +8,7 @@ body {
 }
 
 #myCanvas {
-    background-color: rgba(255, 0, 0, 0.18);
+    background-color: rgb(245, 255, 216);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -21,22 +21,36 @@ p.hint {
     z-index: 100;
 }
 
-.shapes {
+.mainActionControl {
     position: absolute;
     z-index: 100;
     right: 0;
-    background-color: #ddd;
     top: 10%;
 }
 
-.shapes .menu{
+.mainActionControl .menuItem{
     cursor: pointer;
     padding: 5px 30px 8px 25px;
-    margin: 0;
+    margin-left: auto;
     width: 140px;
+    background-color: #ddd;
 
 }
-.shapes .menu:hover {background: #bbb; font-weight: bold;}
+.mainActionControl .menuItem:hover {background: #bbb; font-weight: bold;}
+
+.groupMenu {display: flex; flex-direction:  row-reverse; flex-wrap: nowrap; overflow: hidden; position: relative;}
+.groupMenu_Title {z-index: 100;}
+.groupMenu_Buttons {z-index: 90; display: flex; flex-direction:  row; flex-wrap: nowrap;}
+
+.groupMenu .groupMenu_Buttons {transition: all 0.3s ease-out;margin-right:-100%;}
+.groupMenu_Title:hover + .groupMenu_Buttons,  .groupMenu_Buttons:hover {margin-right: 0;}
+
+
+/* Color */
+.groupMenu_Buttons .color {background-color: #fff;}
+.groupMenu_Buttons .color.red {background-color: #FF0000;}
+.groupMenu_Buttons .color.green {background-color: #008000;}
+.groupMenu_Buttons .color.blue {background-color: #0000ff;}
 
 p {font-size: 22px;}
 
