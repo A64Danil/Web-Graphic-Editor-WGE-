@@ -1,19 +1,19 @@
 /**
- * Created by Данил on 01.06.2018.
+ * Created by Р”Р°РЅРёР» on 01.06.2018.
  */
 class App {
-    constructor(canvas) {//  Настройки канваса
+    constructor(canvas) {//  РќР°СЃС‚СЂРѕР№РєРё РєР°РЅРІР°СЃР°
         this.canvas = canvas;
         this.frames = 0;
         this.fps = 0;
         this.lastFPSUpdate = 0;
-        this.ctx = canvas.getContext('2d'); // устанавливаем контекст для нашего канваса
-        this.shapes = [];  // Массив с нашими шейпами (на канвасе)
+        this.ctx = canvas.getContext('2d'); // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РєРѕРЅС‚РµРєСЃС‚ РґР»СЏ РЅР°С€РµРіРѕ РєР°РЅРІР°СЃР°
+        this.shapes = [];  // РњР°СЃСЃРёРІ СЃ РЅР°С€РёРјРё С€РµР№РїР°РјРё (РЅР° РєР°РЅРІР°СЃРµ)
         this.render(); // ???
     }
 
     addShape(shape) {
-        if (shape && !this.shapes.includes(shape)) { // Если шейп есть и его нет в нашема массив, то добавляем
+        if (shape && !this.shapes.includes(shape)) { // Р•СЃР»Рё С€РµР№Рї РµСЃС‚СЊ Рё РµРіРѕ РЅРµС‚ РІ РЅР°С€РµРјР° РјР°СЃСЃРёРІ, С‚Рѕ РґРѕР±Р°РІР»СЏРµРј
             this.shapes.push(shape);
         }
         console.log(this.shapes);
@@ -25,19 +25,19 @@ class App {
     }
 
     setCurrentShape(shape) {
-        this.currentShape = shape; // устанавливаем текущим шейпом тот, который передали
+        this.currentShape = shape; // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РµРєСѓС‰РёРј С€РµР№РїРѕРј С‚РѕС‚, РєРѕС‚РѕСЂС‹Р№ РїРµСЂРµРґР°Р»Рё
     }
 
     clear() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // зачищаем канвас
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // Р·Р°С‡РёС‰Р°РµРј РєР°РЅРІР°СЃ
     }
 
-    // Если шейп обладает размером и координатами
+    // Р•СЃР»Рё С€РµР№Рї РѕР±Р»Р°РґР°РµС‚ СЂР°Р·РјРµСЂРѕРј Рё РєРѕРѕСЂРґРёРЅР°С‚Р°РјРё
     renderShape(shape) {
         if(shape.canRender()) {
-            this.ctx.save(); //сохранение состояния
+            this.ctx.save(); //СЃРѕС…СЂР°РЅРµРЅРёРµ СЃРѕСЃС‚РѕСЏРЅРёСЏ
             this.ctx.translate(shape.x, shape.y);
-            shape.render(this.ctx); // выбираем канвас и рисуем по методу рендер из соотв. подкласса
+            shape.render(this.ctx); // РІС‹Р±РёСЂР°РµРј РєР°РЅРІР°СЃ Рё СЂРёСЃСѓРµРј РїРѕ РјРµС‚РѕРґСѓ СЂРµРЅРґРµСЂ РёР· СЃРѕРѕС‚РІ. РїРѕРґРєР»Р°СЃСЃР°
             this.ctx.restore();
 
         }
@@ -62,11 +62,11 @@ class App {
 
             const now = performance.now();
 
-            if (now - self.lastFPSUpdate >= 1000) { // frames здесь - количество кадров между сейчас и последним апдейтом
+            if (now - self.lastFPSUpdate >= 1000) { // frames Р·РґРµСЃСЊ - РєРѕР»РёС‡РµСЃС‚РІРѕ РєР°РґСЂРѕРІ РјРµР¶РґСѓ СЃРµР№С‡Р°СЃ Рё РїРѕСЃР»РµРґРЅРёРј Р°РїРґРµР№С‚РѕРј
                 self.lastFPSUpdate = now;
 
                 self.fps = self.frames;
-                self.frames = 0; // обнуляем счеьчик кадров
+                self.frames = 0; // РѕР±РЅСѓР»СЏРµРј СЃС‡РµСЊС‡РёРє РєР°РґСЂРѕРІ
             }
 
             self.renderFPS();

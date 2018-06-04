@@ -1,5 +1,5 @@
 /**
- * Created by Данил on 01.06.2018.
+ * Created by Р”Р°РЅРёР» on 01.06.2018.
  */
 class Shape {
     constructor(x, y, size) {
@@ -21,7 +21,7 @@ class Shape {
     }
 
     setFillColor(color) {
-        this.fillColor = color; // запомнили цвет фигуры
+        this.fillColor = color; // Р·Р°РїРѕРјРЅРёР»Рё С†РІРµС‚ С„РёРіСѓСЂС‹
     }
 
     setStrokeWidth(width) {
@@ -47,8 +47,8 @@ class Circle extends Shape {
 
         ctx.arc(0, 0, this.size / 2, 0, 2 * Math.PI, false);
 
-        ctx.fillStyle = this.fillColor; // отдаём запомненный цвет на отрисовку в канвас
-        ctx.fill(); // заливаем
+        ctx.fillStyle = this.fillColor; // РѕС‚РґР°С‘Рј Р·Р°РїРѕРјРЅРµРЅРЅС‹Р№ С†РІРµС‚ РЅР° РѕС‚СЂРёСЃРѕРІРєСѓ РІ РєР°РЅРІР°СЃ
+        ctx.fill(); // Р·Р°Р»РёРІР°РµРј
 
         ctx.lineWidth = this.strokeWidth;
         ctx.strokeStyle = this.strokeColor;
@@ -94,6 +94,6 @@ class Triangle extends Shape {
 
 class Ereaser extends Shape {
     render(ctx) {
-        ctx.clearRect(-this.size / 2, -this.size / 2, this.size, this.size); // зачищаем канвас
+        ctx.clearRect(-this.size / 2, -this.size / 2, this.size, this.size); // Р·Р°С‡РёС‰Р°РµРј РєР°РЅРІР°СЃ
     }
 }

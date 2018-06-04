@@ -1,8 +1,8 @@
 /**
- * Created by Данил on 04.06.2018.
+ * Created by Р”Р°РЅРёР» on 04.06.2018.
  */
-const canvas = document.getElementById('myCanvas'); // Выбираем канвас.
-const app = new App(canvas); // Запускаем приложение применительно к выбранному канвасу
+const canvas = document.getElementById('myCanvas'); // Р’С‹Р±РёСЂР°РµРј РєР°РЅРІР°СЃ.
+const app = new App(canvas); // Р—Р°РїСѓСЃРєР°РµРј РїСЂРёР»РѕР¶РµРЅРёРµ РїСЂРёРјРµРЅРёС‚РµР»СЊРЅРѕ Рє РІС‹Р±СЂР°РЅРЅРѕРјСѓ РєР°РЅРІР°СЃСѓ
 const classMap = {
     quad: Quad,
     circle: Circle,
@@ -24,13 +24,13 @@ canvas.addEventListener("mousemove", function (e) {
 
 canvas.addEventListener("click", function (e) {
     if (app.currentShape) {
-        const shapeClass = app.currentShape.constructor; // записываем класс шейпа в константу
+        const shapeClass = app.currentShape.constructor; // Р·Р°РїРёСЃС‹РІР°РµРј РєР»Р°СЃСЃ С€РµР№РїР° РІ РєРѕРЅСЃС‚Р°РЅС‚Сѓ
         const shape = createShape(shapeClass, e.clientX, e.clientY);
 
-        app.addShape(app.currentShape); // добавляем в массив фигур нашего канваса текущий шейп;
-        app.setCurrentShape(shape); // Говорим что новый шейп в руках - тот что нарисовали
+        app.addShape(app.currentShape); // РґРѕР±Р°РІР»СЏРµРј РІ РјР°СЃСЃРёРІ С„РёРіСѓСЂ РЅР°С€РµРіРѕ РєР°РЅРІР°СЃР° С‚РµРєСѓС‰РёР№ С€РµР№Рї;
+        app.setCurrentShape(shape); // Р“РѕРІРѕСЂРёРј С‡С‚Рѕ РЅРѕРІС‹Р№ С€РµР№Рї РІ СЂСѓРєР°С… - С‚РѕС‚ С‡С‚Рѕ РЅР°СЂРёСЃРѕРІР°Р»Рё
     }
-    console.log(app.currentShape.constructor); //TODO: изучить другие свойства объекта
+    console.log(app.currentShape.constructor); //TODO: РёР·СѓС‡РёС‚СЊ РґСЂСѓРіРёРµ СЃРІРѕР№СЃС‚РІР° РѕР±СЉРµРєС‚Р°
 });
 
 canvas.addEventListener("wheel", function (e) {
@@ -46,15 +46,15 @@ document.addEventListener("keydown", function (e) {
     if (e.keyCode === 27) {
         app.currentShape = null;
         app.setCurrentShape(null);
-        console.log('Вы нажали на esc, keyCode - ' + e.keyCode)
+        console.log('Р’С‹ РЅР°Р¶Р°Р»Рё РЅР° esc, keyCode - ' + e.keyCode)
     }
 });
 
-// получаем форму шэпа из дата-* после клика
+// РїРѕР»СѓС‡Р°РµРј С„РѕСЂРјСѓ С€СЌРїР° РёР· РґР°С‚Р°-* РїРѕСЃР»Рµ РєР»РёРєР°
 document.addEventListener("click", function (e) {
-    const shape = e.target.dataset.shape; // вынули название шейпа из кнопки
-    const action = e.target.dataset.action; // вынули название шейпа из кнопки
-    const color = e.target.dataset.color; // вынули название шейпа из кнопки
+    const shape = e.target.dataset.shape; // РІС‹РЅСѓР»Рё РЅР°Р·РІР°РЅРёРµ С€РµР№РїР° РёР· РєРЅРѕРїРєРё
+    const action = e.target.dataset.action; // РІС‹РЅСѓР»Рё РЅР°Р·РІР°РЅРёРµ С€РµР№РїР° РёР· РєРЅРѕРїРєРё
+    const color = e.target.dataset.color; // РІС‹РЅСѓР»Рё РЅР°Р·РІР°РЅРёРµ С€РµР№РїР° РёР· РєРЅРѕРїРєРё
 
     if (shape && classMap.hasOwnProperty(shape)) {
         const shapeClass = classMap[shape];
@@ -64,12 +64,12 @@ document.addEventListener("click", function (e) {
     }
 
     if (action) {
-        console.log('у этой кнопки есть экше');
+        console.log('Сѓ СЌС‚РѕР№ РєРЅРѕРїРєРё РµСЃС‚СЊ СЌРєС€Рµ');
         app.removeLastShape();
     }
 
     if (color) {
-        console.log('у этой кнопки есть цвет');
+        console.log('Сѓ СЌС‚РѕР№ РєРЅРѕРїРєРё РµСЃС‚СЊ С†РІРµС‚');
         app.currentShape.setFillColor(color);
     }
 
@@ -78,7 +78,7 @@ document.addEventListener("click", function (e) {
 window.addEventListener("load", onResize);
 window.addEventListener("resize", onResize);
 
-// Создает шейп с заданным классом и координатами
+// РЎРѕР·РґР°РµС‚ С€РµР№Рї СЃ Р·Р°РґР°РЅРЅС‹Рј РєР»Р°СЃСЃРѕРј Рё РєРѕРѕСЂРґРёРЅР°С‚Р°РјРё
 function createShape(Class, x, y) {
     var shape = new Class(x, y, currentSize);
 
@@ -89,7 +89,7 @@ function createShape(Class, x, y) {
     return shape;
 }
 
-// Фиксируем размер канваса при ресайзе
+// Р¤РёРєСЃРёСЂСѓРµРј СЂР°Р·РјРµСЂ РєР°РЅРІР°СЃР° РїСЂРё СЂРµСЃР°Р№Р·Рµ
 function onResize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;

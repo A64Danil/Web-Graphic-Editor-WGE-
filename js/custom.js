@@ -1,4 +1,4 @@
 /**
- * Created by Данил on 04.06.2018.
+ * Created by Р”Р°РЅРёР» on 04.06.2018.
  */
 console.log('Start');
