@@ -42,8 +42,8 @@ p.hint {
 .groupMenu_Title {z-index: 100;}
 .groupMenu_Buttons {z-index: 90; display: flex; flex-direction:  row; flex-wrap: nowrap;}
 
-.groupMenu .groupMenu_Buttons {transition: all 0.3s ease-out;margin-right:-100%;}
-.groupMenu_Title:hover + .groupMenu_Buttons,  .groupMenu_Buttons:hover {margin-right: 0;}
+.groupMenu .groupMenu_Buttons {transition: all 0.3s ease-out;margin-right:-100%;    width: 0;}
+.groupMenu_Title:hover + .groupMenu_Buttons,  .groupMenu_Buttons:hover {margin-right: 0;    width: auto;}
 
 
 /* Color */

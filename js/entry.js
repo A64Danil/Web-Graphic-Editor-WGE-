@@ -2,13 +2,18 @@
  * Created by Данил on 04.06.2018.
  */
 const canvas = document.getElementById('myCanvas'); // Выбираем канвас.
-const app = new App(canvas); // Запускаем приложение применительно к выбранному канвасу
+let canvasBgrColor = "#f5ffd8";
+
+const app = new App(canvas, canvasBgrColor); // Запускаем приложение применительно к выбранному канвасу
 const classMap = {
     quad: Quad,
     circle: Circle,
     triangle: Triangle,
-    ereaser: Ereaser
+    ereaserCircle: EreaserCircle,
+    ereaserQuad: EreaserQuad,
+    ereaserTriangle: EreaserTriangle
 };
+
 
 let currentFillColor = "#C6BAEE";
 let currentStrokeColor = "#9D8CD7";
@@ -70,7 +75,8 @@ document.addEventListener("click", function (e) {
 
     if (color) {
         console.log('у этой кнопки есть цвет');
-        app.currentShape.setFillColor(color);
+        currentFillColor = color;
+        if (app.currentShape) app.currentShape.setFillColor(color);
     }
 
 });

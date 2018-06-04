@@ -2,7 +2,7 @@
  * Created by Данил on 01.06.2018.
  */
 class App {
-    constructor(canvas) {//  Настройки канваса
+    constructor(canvas, bgColor) {//  Настройки канваса
         this.canvas = canvas;
         this.frames = 0;
         this.fps = 0;
@@ -10,6 +10,7 @@ class App {
         this.ctx = canvas.getContext('2d'); // устанавливаем контекст для нашего канваса
         this.shapes = [];  // Массив с нашими шейпами (на канвасе)
         this.render(); // ???
+        this.canvas.style.backgroundColor = bgColor;
     }
 
     addShape(shape) {

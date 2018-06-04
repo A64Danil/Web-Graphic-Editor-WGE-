@@ -92,8 +92,29 @@ class Triangle extends Shape {
     }
 }
 
-class Ereaser extends Shape {
-    render(ctx) {
-        ctx.clearRect(-this.size / 2, -this.size / 2, this.size, this.size); // зачищаем канвас
+class EreaserCircle extends Circle {
+    setStrokeColor() {
+        this.strokeColor = canvasBgrColor;
+    }
+    setFillColor() {
+        this.fillColor = canvasBgrColor;
+    }
+}
+
+class EreaserQuad extends Quad {
+    setStrokeColor() {
+        this.strokeColor = canvasBgrColor;
+    }
+    setFillColor() {
+        this.fillColor = canvasBgrColor;
+    }
+}
+
+class EreaserTriangle extends Triangle {
+    setStrokeColor() {
+        this.strokeColor = canvasBgrColor;
+    }
+    setFillColor() {
+        this.fillColor = canvasBgrColor;
     }
 }
