@@ -42,15 +42,17 @@ p.hint {
 .groupMenu_Title {z-index: 100;}
 .groupMenu_Buttons {z-index: 90; display: flex; flex-direction:  row; flex-wrap: nowrap;}
 
-.groupMenu .groupMenu_Buttons {transition: all 0.3s ease-out;margin-right:-100%;    width: 0;}
-.groupMenu_Title:hover + .groupMenu_Buttons,  .groupMenu_Buttons:hover {margin-right: 0;    width: auto;}
+.groupMenu .groupMenu_Buttons {transition: all 0.3s ease-out;margin-right: -100%; width: 0;}
+.groupMenu_Title:hover + .groupMenu_Buttons,  .groupMenu_Buttons:hover {margin-right: 0; width: auto;}
 
 
 /* Color */
 .groupMenu_Buttons .color {background-color: #fff;}
-.groupMenu_Buttons .color.red {background-color: #FF0000;}
-.groupMenu_Buttons .color.green {background-color: #008000;}
-.groupMenu_Buttons .color.blue {background-color: #0000ff;}
+.groupMenu_Buttons .color.colorf4a6c0 {background-color: #f4a6c0;}
+.groupMenu_Buttons .color.color8ac2af {background-color: #8ac2af;}
+.groupMenu_Buttons .color.color748fd3 {background-color: #748fd3;}
+.groupMenu_Buttons .color.colorfc9e96 {background-color: #fc9e96;}
+.groupMenu_Buttons .color.colorf9d081 {background-color: #f9d081;}
 
 p {font-size: 22px;}
 

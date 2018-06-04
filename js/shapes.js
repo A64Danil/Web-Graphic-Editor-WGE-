@@ -93,6 +93,10 @@ class Triangle extends Shape {
 }
 
 class EreaserCircle extends Circle {
+    setStrokeWidth() {
+        this.strokeWidth = 1;
+    }
+
     setStrokeColor() {
         this.strokeColor = canvasBgrColor;
     }

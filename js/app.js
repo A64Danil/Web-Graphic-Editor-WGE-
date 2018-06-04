@@ -17,7 +17,8 @@ class App {
         if (shape && !this.shapes.includes(shape)) { // Если шейп есть и его нет в нашема массив, то добавляем
             this.shapes.push(shape);
         }
-        console.log(this.shapes);
+        if (this.shapes.length < 10) console.log(this.shapes)
+
     }
 
     removeLastShape() {
