@@ -16,50 +16,62 @@ const classMap = {
 
 
 let currentFillColor = "#C6BAEE";
-let currentStrokeColor = "#9D8CD7";
-let currentStrokeWidth = 2;
+let currentStrokeColor = currentFillColor;
+let currentStrokeWidth = 1;
+
+let tepmStrokeColor = currentStrokeColor;
+let tepmStrokeWidth = currentStrokeWidth;
+
 let currentSize = 100;
+let currentIsStroke = false;
 
 
 canvas.addEventListener("mousemove", function (e) {
     if (app.currentShape) {
         app.currentShape.setPosition(e.clientX, e.clientY)
     }
-
-    
 });
 
 canvas.addEventListener('mousedown', dragAndPaint, true);
 
 function dragAndPaint(e) {
-    //console.log('при нажатии на мышку')
+
     if (app.currentShape) {
         canvas.addEventListener('mousemove', moveAndPaint);
     }
 }
 
 function moveAndPaint(e) {
-    const shapeClass = app.currentShape.constructor; // записываем класс шейпа в константу
-    const shape = createShape(shapeClass, e.clientX, e.clientY);
+    if (e.which == 1) {
+        const shapeClass = app.currentShape.constructor; // записываем класс шейпа в константу
+        const shape = createShape(shapeClass, e.clientX, e.clientY);
 
-    app.addShape(app.currentShape); // добавляем в массив фигур нашего канваса текущий шейп;
-    app.setCurrentShape(shape); // Говорим что новый шейп в руках - тот что нарисовали
-
-    canvas.addEventListener('mouseup', function(e) {
-        //console.log('сняли событие с канваса');
-        canvas.removeEventListener('mousemove', moveAndPaint);
-    });
+        app.addShapeArray(app.currentShape); // добавляем в массив фигур нашего канваса текущий шейп;
+        app.setCurrentShape(shape); // Говорим что новый шейп в руках - тот что нарисовали
+    }
 }
 
+// canvas.addEventListener('mouseup', function(e) {
+//     console.log('сняли событие с канваса');
+//     canvas.removeEventListener('mousemove', moveAndPaint);
+//     app.clearTmpShapeArr();
+// });
+
 // Drawing of shape
-canvas.addEventListener("click", function (e) {
-    if (app.currentShape) {
+canvas.addEventListener('mouseup', function (e) {
+    console.log('сняли событие с канваса', app.shapesInArr.length);
+    canvas.removeEventListener('mousemove', moveAndPaint);
+
+    if (app.currentShape && app.shapesInArr.length == 0) {
         const shapeClass = app.currentShape.constructor; // записываем класс шейпа в константу
         const shape = createShape(shapeClass, e.clientX, e.clientY);
 
         app.addShape(app.currentShape); // добавляем в массив фигур нашего канваса текущий шейп;
         app.setCurrentShape(shape); // Говорим что новый шейп в руках - тот что нарисовали
     }
+
+
+    app.clearTmpShapeArr();
     //console.log(app.currentShape.constructor); //TODO: изучить другие свойства объекта
 });
 
@@ -82,13 +94,16 @@ document.addEventListener("keydown", function (e) {
 
 // Brush and Hand control
 document.addEventListener("click", function (e) {
+    let target = e.target;
     const shape = e.target.dataset.shape; // вынули название шейпа из кнопки
     const action = e.target.dataset.action; // вынули data
     const color = e.target.dataset.color;
     const size = e.target.dataset.size;
     const strokeWidth = e.target.dataset.strokeWidth;
+    const isStroked = e.target.dataset.isstroke;
     const strokeColor = e.target.dataset.strokeColor;
 
+    // Brush Form
     if (shape && classMap.hasOwnProperty(shape)) {
         const shapeClass = classMap[shape];
         const newShape = createShape(shapeClass, e.clientX, e.clientY);
@@ -96,38 +111,57 @@ document.addEventListener("click", function (e) {
         app.setCurrentShape(newShape);
     }
 
+    // Remove Last Shape
     if (action) {
-        console.log('у этой кнопки есть экше');
         app.removeLastShape();
     }
 
+    // Color
     if (color) {
-        console.log('у этой кнопки есть цвет');
-        currentFillColor = color;
-        if (app.currentShape) app.currentShape.setFillColor(currentFillColor);
+
+        currentStrokeColor = currentFillColor = color;
+        if (app.currentShape && currentIsStroke == false) {
+            app.currentShape.setStrokeColor(currentFillColor);
+            app.currentShape.setFillColor(currentFillColor);
+        } else if (app.currentShape) app.currentShape.setFillColor(currentFillColor);
     }
 
+    // Size
     if (size) {
         console.log('у этой кнопки есть размер', size);
         currentSize = +size;
         if (app.currentShape) {app.currentShape.setSize(currentSize);}
     }
 
-    if (strokeWidth == 0) {
-        console.log('у этой кнопки нулевой размер обводки', strokeWidth);
+    // Is strokes?
+    if (isStroked && isStroked == 0) {
+        console.log('Рамка была отключена,' +  isStroked + ' включаем. Вр. цвет - ' + tepmStrokeColor + 'Шир.' + tepmStrokeWidth);
+        currentIsStroke = true;
+        target.dataset.isstroke = 1;
+        currentStrokeColor = tepmStrokeColor;
+        currentStrokeWidth = tepmStrokeWidth;
+        if (app.currentShape) {app.currentShape.setIsStroke(currentIsStroke, currentStrokeColor,currentStrokeWidth);}
+
+    }  else if (isStroked && isStroked == 1) {
+        console.log('Рамка была вкключена,' +  isStroked + ' отключаем. Вр. цвет - ' + tepmStrokeColor + 'Шир.' + tepmStrokeWidth);
+        currentIsStroke = false;
+        target.dataset.isstroke = 0;
+        tepmStrokeColor = currentStrokeColor;
+        tepmStrokeWidth = currentStrokeWidth;
         currentStrokeWidth = 1;
         currentStrokeColor = currentFillColor;
-        if (app.currentShape) {
-            app.currentShape.setStrokeColor(currentFillColor);
-            app.currentShape.setStrokeWidth(1);
-        }
-    } else if (strokeWidth) {
+        if (app.currentShape) {app.currentShape.setIsStroke(currentIsStroke, currentFillColor);}
+    }
+
+    // Stroke width
+    if (strokeWidth && currentIsStroke == true) {
         console.log('у этой кнопки есть размер обводки', strokeWidth);
         currentStrokeWidth = +strokeWidth;
         if (app.currentShape) {app.currentShape.setStrokeWidth(currentStrokeWidth);}
     }
 
-    if (strokeColor) {
+    // Stroke Color
+    if (strokeColor && currentIsStroke == true) {
         console.log('у этой кнопки есть цвет обводки');
         currentStrokeColor = strokeColor;
         if (app.currentShape) {

@@ -16,6 +16,19 @@ class Shape {
         this.size = size < 0 ? 0 : size;
     }
 
+    setIsStroke(state, color, width) {
+        if (state == false) {
+            this.strokeColor = color;
+            this.strokeWidth = 1;
+            console.log('у этой фигуры рамка отключена');
+        }
+        else {
+            this.strokeColor = color;
+            this.strokeWidth = width;
+            console.log('у этой фигуры рамка ВКключена');
+        }
+    }
+
     setStrokeColor(color) {
         this.strokeColor = color;
     }
