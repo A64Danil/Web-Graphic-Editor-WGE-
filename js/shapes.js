@@ -2,9 +2,18 @@
  * Created by Данил on 01.06.2018.
  */
 class Primitive {
-    constructor(x, y, size) {
+    constructor(size, x, y, x2, y2) {
         this.setPosition(x, y);
         this.setSize(size);
+        if (x2 && y2) {
+            console.log('конечные координаты существуют');
+            this.setEndPosition(x2, y2);
+        }
+    }
+
+    setEndPosition(x, y) {
+        this.x2 = x;
+        this.y2 = y;
     }
 
     setPosition(x, y) {
@@ -187,6 +196,32 @@ class QuadBrush extends Brush {
 
         ctx.fillStyle = this.fillColor;
         ctx.fill();
+        ctx.lineWidth = this.strokeWidth;
+        ctx.strokeStyle = this.strokeColor;
+        ctx.stroke();
+    }
+}
+
+
+class Line extends Primitive {
+    setStrokeColor() {
+        this.strokeColor = currentFillColor;
+    }
+
+    setStrokeWidth() {
+        this.strokeWidth = 10;
+    }
+
+    // TODO: сделать рисование линий по двум кликам
+    render(ctx) {
+        // Создаем новый путь (с текущим цветом и толщиной линии)
+        ctx.beginPath();
+        // Нажатием левой кнопки мыши помещаем "кисть" на холст
+        ctx.moveTo(0, 0);
+        // Рисуем линию до новой координаты
+        ctx.lineTo(this.strokeWidth, this.strokeWidth);
+        ctx.closePath();
+
         ctx.lineWidth = this.strokeWidth;
         ctx.strokeStyle = this.strokeColor;
         ctx.stroke();

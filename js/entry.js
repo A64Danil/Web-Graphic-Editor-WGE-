@@ -13,7 +13,8 @@ const shapeMap = {
     ereaserQuad: EreaserQuad,
     ereaserTriangle: EreaserTriangle,
     brushcircle: CircleBrush,
-    brushquad: QuadBrush
+    brushquad: QuadBrush,
+    line: Line
 };
 
 const brushMap = {
@@ -34,6 +35,57 @@ let tepmStrokeWidth = currentStrokeWidth;
 
 let currentSize = 100;
 let currentIsStroke = false;
+
+let isDrawing = false;
+
+
+// Подключаем требуемые для рисования события
+canvas.onmousedown = startDrawing;
+canvas.onmouseup = stopDrawing;
+canvas.onmouseout = stopDrawing;
+canvas.onmousemove = draw;
+
+function startDrawing(e) {
+    // Начинаем рисовать
+    console.log('начали рисовать');
+    //console.log("isDrawing " + isDrawing);
+    app.ctx.strokeStyle = "f00";
+    app.ctx.lineWidth = 10;
+    isDrawing = true;
+
+}
+
+function draw(e) {
+    if (isDrawing == true)
+    {
+        //console.log("isDrawing" + isDrawing);
+
+        // Определяем текущие координаты указателя мыши
+        let oldX = e.clientX;
+        let oldY = e.clientY;
+
+        var x = e.pageX - canvas.offsetLeft;
+        var y = e.pageY - canvas.offsetTop;
+
+        var x2 = x / 2;
+        var y2 = y / 2;
+
+        console.log('x: ' + e.clientX + ', y: ' + e.clientY);
+        console.log('x: ' + x2 + ', y: ' + y2);
+
+        const shapeClass = app.currentShape.constructor; // записываем класс шейпа в константу
+        const shape = createShape(shapeClass, x, y, );
+
+        app.addShape(app.currentShape); // добавляем в массив фигур нашего канваса текущий шейп;
+        app.setCurrentShape(shape); // Говорим что новый шейп в руках - тот что нарисовали
+
+    }
+}
+
+function stopDrawing() {
+    console.log('закончили рисовать');
+    isDrawing = false;
+}
 
 
 canvas.addEventListener("mousemove", function (e) {
@@ -137,7 +189,7 @@ document.addEventListener("click", function (e) {
                 break;
             default:
                 console.log('В руках что-то еще - ' + currentShapeClass);
-                currentInHand = null;
+                currentInHand = currentShapeClass;
         }
 
         const newShape = createShape(shapeClass, e.clientX, e.clientY);
@@ -215,18 +267,11 @@ document.addEventListener("click", function (e) {
 window.addEventListener("load", onResize);
 window.addEventListener("resize", onResize);
 
-// Создает кисть
-function createBrush(Class, x, y) {
-
-    var shape = new Class(x, y, currentSize);
-    shape.setFillColor(currentFillColor);
-    return shape;
-}
 
 // Создает шейп с заданным классом и координатами
-function createShape(Class, x, y) {
+function createShape(Class, x, y, x2, y2) {
     console.log("создаем шейп");
-    var shape = new Class(x, y, currentSize);
+    var shape = new Class(currentSize, x, y, x2, y2);
 
     shape.setFillColor(currentFillColor);
     shape.setStrokeColor(currentStrokeColor);
