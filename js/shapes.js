@@ -1,7 +1,7 @@
 /**
  * Created by Данил on 01.06.2018.
  */
-class Shape {
+class Primitive {
     constructor(x, y, size) {
         this.setPosition(x, y);
         this.setSize(size);
@@ -16,6 +16,25 @@ class Shape {
         this.size = size < 0 ? 0 : size;
     }
 
+    setFillColor(color) {
+        this.fillColor = color; // запомнили цвет фигуры
+    }
+
+    canRender() {
+        return (
+            Number.isFinite(this.size) &&
+            Number.isFinite(this.x) &&
+            Number.isFinite(this.y)
+        );
+    }
+
+    render(ctx) {
+        throw new Error('this is an abstract shape');
+    }
+}
+
+
+class Shape extends Primitive {
     setIsStroke(state, color, width) {
         if (state == false) {
             this.strokeColor = color;
@@ -33,24 +52,8 @@ class Shape {
         this.strokeColor = color;
     }
 
-    setFillColor(color) {
-        this.fillColor = color; // запомнили цвет фигуры
-    }
-
     setStrokeWidth(width) {
         this.strokeWidth = width;
-    }
-
-    canRender() {
-        return (
-            Number.isFinite(this.size) &&
-            Number.isFinite(this.x) &&
-            Number.isFinite(this.y)
-        );
-    }
-
-    render(ctx) {
-        throw new Error('this is an abstract shape');
     }
 }
 
@@ -105,6 +108,8 @@ class Triangle extends Shape {
     }
 }
 
+
+
 class EreaserCircle extends Circle {
     setStrokeWidth() {
         this.strokeWidth = 1;
@@ -119,6 +124,9 @@ class EreaserCircle extends Circle {
 }
 
 class EreaserQuad extends Quad {
+    setStrokeWidth() {
+        this.strokeWidth = 1;
+    }
     setStrokeColor() {
         this.strokeColor = canvasBgrColor;
     }
@@ -128,10 +136,59 @@ class EreaserQuad extends Quad {
 }
 
 class EreaserTriangle extends Triangle {
+    setStrokeWidth() {
+        this.strokeWidth = 1;
+    }
     setStrokeColor() {
         this.strokeColor = canvasBgrColor;
     }
     setFillColor() {
         this.fillColor = canvasBgrColor;
+    }
+}
+
+
+
+class Brush extends Primitive {
+    setStrokeColor() {
+        this.strokeColor = currentFillColor;
+    }
+
+    setStrokeWidth() {
+        this.strokeWidth = 1;
+    }
+}
+
+class CircleBrush extends Brush {
+    render(ctx) {
+        ctx.beginPath();
+
+        ctx.arc(0, 0, this.size / 2, 0, 2 * Math.PI, false);
+
+        ctx.fillStyle = this.fillColor; // отдаём запомненный цвет на отрисовку в канвас
+        ctx.fill(); // заливаем
+
+        ctx.lineWidth = this.strokeWidth;
+        ctx.strokeStyle = this.strokeColor;
+        ctx.stroke();
+    }
+}
+
+class QuadBrush extends Brush {
+    render(ctx) {
+        ctx.beginPath();
+
+        ctx.rect(
+            -this.size / 2,
+            -this.size / 2,
+            this.size,
+            this.size
+        );
+
+        ctx.fillStyle = this.fillColor;
+        ctx.fill();
+        ctx.lineWidth = this.strokeWidth;
+        ctx.strokeStyle = this.strokeColor;
+        ctx.stroke();
     }
 }

@@ -5,15 +5,25 @@ const canvas = document.getElementById('myCanvas'); // Выбираем канв
 let canvasBgrColor = "#fff";
 
 const app = new App(canvas, canvasBgrColor); // Запускаем приложение применительно к выбранному канвасу
-const classMap = {
-    quad: Quad,
+const shapeMap = {
     circle: Circle,
+    quad: Quad,
     triangle: Triangle,
     ereaserCircle: EreaserCircle,
     ereaserQuad: EreaserQuad,
-    ereaserTriangle: EreaserTriangle
+    ereaserTriangle: EreaserTriangle,
+    brushcircle: CircleBrush,
+    brushquad: QuadBrush
 };
 
+const brushMap = {
+    circle: CircleBrush,
+    quad: QuadBrush
+};
+
+
+let currentShapeClass;
+let currentInHand;
 
 let currentFillColor = "#C6BAEE";
 let currentStrokeColor = currentFillColor;
@@ -35,8 +45,7 @@ canvas.addEventListener("mousemove", function (e) {
 canvas.addEventListener('mousedown', dragAndPaint, true);
 
 function dragAndPaint(e) {
-
-    if (app.currentShape) {
+    if (app.currentShape && currentInHand != 'shape') {
         canvas.addEventListener('mousemove', moveAndPaint);
     }
 }
@@ -51,11 +60,6 @@ function moveAndPaint(e) {
     }
 }
 
-// canvas.addEventListener('mouseup', function(e) {
-//     console.log('сняли событие с канваса');
-//     canvas.removeEventListener('mousemove', moveAndPaint);
-//     app.clearTmpShapeArr();
-// });
 
 // Drawing of shape
 canvas.addEventListener('mouseup', function (e) {
@@ -72,7 +76,6 @@ canvas.addEventListener('mouseup', function (e) {
 
 
     app.clearTmpShapeArr();
-    //console.log(app.currentShape.constructor); //TODO: изучить другие свойства объекта
 });
 
 canvas.addEventListener("wheel", function (e) {
@@ -95,19 +98,49 @@ document.addEventListener("keydown", function (e) {
 // Brush and Hand control
 document.addEventListener("click", function (e) {
     let target = e.target;
-    const shape = e.target.dataset.shape; // вынули название шейпа из кнопки
-    const action = e.target.dataset.action; // вынули data
-    const color = e.target.dataset.color;
-    const size = e.target.dataset.size;
-    const strokeWidth = e.target.dataset.strokeWidth;
-    const isStroked = e.target.dataset.isstroke;
-    const strokeColor = e.target.dataset.strokeColor;
+    const shape = target.dataset.shape; // вынули название шейпа из кнопки
+    const brush = target.dataset.brush; // вынули название шейпа из кнопки
+    const action = target.dataset.action; // вынули data
+    const color = target.dataset.color;
+    const size = target.dataset.size;
+    const strokeWidth = target.dataset.strokeWidth;
+    const isStroked = target.dataset.isstroke;
+    const strokeColor = target.dataset.strokeColor;
 
-    // Brush Form
-    if (shape && classMap.hasOwnProperty(shape)) {
-        const shapeClass = classMap[shape];
+
+    
+    // Shape Form
+    if (shape && shapeMap.hasOwnProperty(shape)) {
+        const shapeClass = shapeMap[shape];
+
+
+        currentShapeClass = shape;
+        console.log(currentShapeClass);
+
+        switch (currentShapeClass) {
+            case 'brushcircle':
+            case 'brushquad':
+                console.log('В руках кисть - ' + currentShapeClass);
+                currentInHand = 'brush';
+                break;
+            case 'circle':
+            case 'quad':
+            case 'triangle':
+                console.log('В руках шейп - ' + currentShapeClass);
+                currentInHand = 'shape';
+                break;
+            case 'ereaserCircle':
+            case 'ereaserQuad':
+            case 'ereaserTriangle':
+                console.log('В руках ластик - ' + currentShapeClass);
+                currentInHand = 'ereaser';
+                break;
+            default:
+                console.log('В руках что-то еще - ' + currentShapeClass);
+                currentInHand = null;
+        }
+
         const newShape = createShape(shapeClass, e.clientX, e.clientY);
-
         app.setCurrentShape(newShape);
     }
 
@@ -118,12 +151,19 @@ document.addEventListener("click", function (e) {
 
     // Color
     if (color) {
-
-        currentStrokeColor = currentFillColor = color;
-        if (app.currentShape && currentIsStroke == false) {
+        currentFillColor = color;
+        if ( currentInHand == 'brush' && currentIsStroke == true )  {
+            console.info('Обводка работает только для фигур');
+            app.currentShape.setFillColor(currentFillColor);
+            app.currentShape.setStrokeColor(currentFillColor);
+        } else if (app.currentShape && currentIsStroke == false) {
+            currentStrokeColor = currentFillColor = color;
             app.currentShape.setStrokeColor(currentFillColor);
             app.currentShape.setFillColor(currentFillColor);
-        } else if (app.currentShape) app.currentShape.setFillColor(currentFillColor);
+        } else if (app.currentShape) {
+            app.currentShape.setFillColor(currentFillColor);
+            app.currentShape.setStrokeColor(currentStrokeColor);
+        }
     }
 
     // Size
@@ -162,9 +202,9 @@ document.addEventListener("click", function (e) {
 
     // Stroke Color
     if (strokeColor && currentIsStroke == true) {
-        console.log('у этой кнопки есть цвет обводки');
         currentStrokeColor = strokeColor;
         if (app.currentShape) {
+            console.log('пытаемся поменять обводку текущего объекта в руках');
             app.currentShape.setStrokeColor(currentStrokeColor);
             app.currentShape.setStrokeWidth(currentStrokeWidth);
         }
@@ -175,8 +215,17 @@ document.addEventListener("click", function (e) {
 window.addEventListener("load", onResize);
 window.addEventListener("resize", onResize);
 
+// Создает кисть
+function createBrush(Class, x, y) {
+
+    var shape = new Class(x, y, currentSize);
+    shape.setFillColor(currentFillColor);
+    return shape;
+}
+
 // Создает шейп с заданным классом и координатами
 function createShape(Class, x, y) {
+    console.log("создаем шейп");
     var shape = new Class(x, y, currentSize);
 
     shape.setFillColor(currentFillColor);
